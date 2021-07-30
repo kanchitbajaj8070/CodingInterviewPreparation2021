@@ -1,4 +1,4 @@
-package Recursion.week1;
+package Recursion.basic;
 
 import java.util.Arrays;
 

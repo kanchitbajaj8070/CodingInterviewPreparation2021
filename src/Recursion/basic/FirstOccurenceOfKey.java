@@ -1,4 +1,4 @@
-package Recursion.week1;
+package Recursion.basic;
 
 public class FirstOccurenceOfKey {
     public static void main(String[] args) {

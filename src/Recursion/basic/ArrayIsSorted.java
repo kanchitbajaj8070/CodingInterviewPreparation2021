@@ -1,4 +1,4 @@
-package Recursion.week1;
+package Recursion.basic;
 
 public class ArrayIsSorted {
     public static void main(String[] args) {
