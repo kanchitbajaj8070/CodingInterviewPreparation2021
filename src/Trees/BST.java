@@ -1,5 +1,7 @@
 package Trees;
 
+import java.util.*;
+
 public class BST {
     public class Node {
         public int value;
@@ -160,5 +162,43 @@ tail=tail.left;
          }
         }
 
+    }
+
+    public Map<Integer,Integer> topView()
+    {
+        Map<Integer,Integer> map=new TreeMap<>();
+        topView(root,map,0);
+        System.out.println(map);
+        return map;
+    }
+
+    private void topView(Node root, Map<Integer, Integer> map, int i) {
+    if(root==null)
+        return;
+            if(!map.containsKey(i))
+                map.put(i,root.value);
+            topView(root.left,map,i-1);
+            topView(root.right,map,i+1);
+
+    }
+
+    public Map<Integer, List<Integer>> leaves()
+    {
+        Map<Integer,List<Integer>> map=new TreeMap<>();
+        leaves(root,map,0);
+        System.out.println(map);
+        return map;
+    }
+
+    private void leaves(Node root, Map<Integer, List<Integer>> map, int i) {
+        if(root==null)
+            return;
+        if(root.left==null&&root.right==null)
+        {   List<Integer> list=map.getOrDefault(i,new ArrayList<>());
+                    list.add(root.value);
+                    map.put(i,list);
+        }
+        leaves(root.left,map,i-1);
+        leaves(root.right,map,i+1);
     }
 }

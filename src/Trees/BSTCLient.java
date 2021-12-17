@@ -11,14 +11,17 @@ public class BSTCLient {
         tree.add(19);
         tree.add(17);
         tree.add(23);
-
         tree.add(27);
-        //tree.add(18);
+        tree.add(18);
         tree.add(22);
-        tree.inorder();
+
+
+//        tree.leaves();
+//        tree.topView();
+        //tree.inorder();
         //tree.fillWithSumOfLeft(tree.root);
-        tree.inorder();
-        tree.convertLeavesToDll();
+        //tree.inorder();
+       // tree.convertLeavesToDll();
 //        tree.postorder();
 //        System.out.println();
 //        tree.preorder();
