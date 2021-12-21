@@ -1,8 +1,6 @@
 package Recursion.AlgoExpert;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class ProductSum {
     public static void main(String[] args) {
@@ -21,8 +19,44 @@ public class ProductSum {
                     input.add(s.substring(prev + 1, i + 1));
             }
         }
-    stackSolution(input);
+        List<Object> modifiedInput = createInput();
+        System.out.println( recusiveSolution(modifiedInput, 1));
+        // stackSolution(input);
 
+    }
+
+    private static List<Object> createInput() {
+        //  String s = "[5,2,[7,-1],3,[6,[-13,8],4]]";
+        List<Object> objects = new ArrayList<>();
+        objects.add(5);
+        objects.add(2);
+        List<Integer> arr = new ArrayList<>();
+        arr.add(7);
+        arr.add(-1);
+        objects.add(new ArrayList<>(arr));
+        objects.add(3);
+        List<Object> temp = new ArrayList<>();
+        temp.add(6);
+        arr = new ArrayList<>();
+        arr.add(-13);
+        arr.add(8);
+        temp.add(new ArrayList<>(arr));
+        temp.add(4);
+        objects.add(new ArrayList<>(temp));
+       // System.out.println(objects);
+        return objects;
+    }
+
+    private static int recusiveSolution(List<Object> input, int multiplier) {
+        int sum = 0;
+        for (int i = 0; i < input.size(); i++) {
+            Object element = input.get(i);
+            if ((element instanceof ArrayList)) {
+                sum += recusiveSolution((List<Object>) element, multiplier + 1);
+            } else
+                sum += (Integer) element;
+        }
+        return sum * multiplier;
     }
 
     private static void stackSolution(List<String> input) {
