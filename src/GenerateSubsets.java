@@ -13,6 +13,7 @@ public class GenerateSubsets {
             System.out.println(temp);
             return;
         }
+
         temp.add(arr[i]);
         generateSubsets(arr, i + 1, temp);
         temp.remove(temp.size() - 1);
