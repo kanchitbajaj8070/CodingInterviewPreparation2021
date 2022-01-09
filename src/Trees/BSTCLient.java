@@ -2,7 +2,9 @@ package Trees;
 
 public class BSTCLient {
     public static void main(String[] args) {
-        BST tree=new BST();
+        //BST tree=new BST();
+        BST tree=new BSTmoreQues();
+
         tree.add(14);
         tree.add(12);
         tree.add(13);
@@ -15,16 +17,15 @@ public class BSTCLient {
         tree.add(18);
         tree.add(22);
 
-
-//        tree.leaves();
+      //  tree.leaves();
 //        tree.topView();
         //tree.inorder();
         //tree.fillWithSumOfLeft(tree.root);
-        //tree.inorder();
+        tree.inorder();
        // tree.convertLeavesToDll();
 //        tree.postorder();
 //        System.out.println();
-//        tree.preorder();
+        tree.preorder();
 //int[] arr={1,2,3,4,5,6};
 //tree.constructFromSortedArray(arr);
 //tree.inorder();

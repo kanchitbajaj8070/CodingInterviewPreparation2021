@@ -7,7 +7,7 @@ import java.util.List;
 public class LongestPalindromicSubsequence {
     public static void main(String[] args) {
 
-        String a = "REJIORHVBI34UHRE4";
+        String a = "ABABA";
         //System.out.println(LongestPalindromicSubsequence(a,0,a.length()-1));
         int[][] dp = new int[a.length() + 1][a.length() + 1];
         for (int i = 0; i < a.length(); i++)

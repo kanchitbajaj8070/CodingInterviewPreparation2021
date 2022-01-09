@@ -18,7 +18,23 @@ public class BST {
             this.right = right;
         }
     }
+    public class NodeWithDescendants {
+        public int value;
+        public NodeWithDescendants left;
+        public NodeWithDescendants right;
+        int descendants;
 
+        NodeWithDescendants(int v) {
+            value = v;
+        }
+
+        NodeWithDescendants(int a, NodeWithDescendants left, NodeWithDescendants right) {
+            value = a;
+            this.left = left;
+            this.right = right;
+        }
+    }
+    public NodeWithDescendants nodeWithDescendantsRoot;
     public Node root;
 
     public void add(int val) {
@@ -71,7 +87,14 @@ public class BST {
         System.out.print(root.value + "   ");
         inorder(root.right);
     }
+    public void inorderWithDescendants(NodeWithDescendants root) {
 
+        if (root == null)
+            return;
+        inorderWithDescendants(root.left);
+        System.out.print("[ "+root.value + " ,  "+root.descendants+" ]");
+        inorderWithDescendants(root.right);
+    }
     public void postorder() {
         postorder(root);
     }
