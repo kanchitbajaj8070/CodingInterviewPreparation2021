@@ -1,5 +1,6 @@
 package Trees;
 
+import javax.swing.tree.TreeNode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -8,7 +9,7 @@ public class BSTmoreQues extends BST {
     public static void main(String[] args) {
         BSTmoreQues tree = new BSTmoreQues();
         tree.populateTree();
-        //tree.preorder();
+        tree.preorder();
         //tree.preOrderWithoutRecursion(tree.root);
         tree.inorder();
         //tree.kthNodeOfInorderTransversal(8, tree.root);
@@ -18,54 +19,114 @@ public class BSTmoreQues extends BST {
         //System.out.println(tree.sumOfAllPathsToLeavesSimpleMethod(tree.root,0));
         //System.out.println(tree.doesRootToLeafPathSUmExists(tree.root,270));
         //tree.largestSubTreeComplete();
-        tree.getSuccesor(45);
+        //tree.getSuccesor(45);
 //        tree.populateTreeWithDescendants();
 //        tree.inorderWithDescendants(tree.nodeWithDescendantsRoot);
 //        System.out.println();
 //        tree.kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(2);
+       // tree.getLeavesAsLinkedList();
+        //tree.constructTreeFromInorderAndPreorderTransversals();
+        tree.getExterior();
+    }
 
+    private void getExterior() {
+        List<Integer> left=new ArrayList<>();
+        List<Integer> right=new ArrayList<>();
+        List<Integer> leaves = new ArrayList<>();
+        getLeftBoundary(left,root.left);
+        getLeaves(leaves, root);
+        getRightBoundary(right,root.right);
+        Collections.reverse(right);
+        left.addAll(leaves);
+        left.addAll(right);
+        left.add(0,root.value);
+        System.out.println(left);
     }
-    private static final class SuccesorAnswer
-    {
-        private Node ans;
-    }
-    public void getSuccesor(int n)
-    {
-        Node node=findNode(n,root);
-        if(node==null)
+
+    private void getLeftBoundary(List<Integer> list, Node node) {
+        if (node == null)
             return;
-        Integer ans=null;
-        if(node.right!=null)
-        {
-            Node trav=node.right;
-            while(trav.left!=null)
-                trav=trav.left;
-            System.out.println(trav.value);
+        if (node.left == null && node.right == null) {
+            return;
+        }
+        list.add(node.value);
+        if(node.left!=null) {
+            getLeftBoundary(list, node.left);
         }
         else
-        {
-            SuccesorAnswer answer=new SuccesorAnswer();
-            getSuccessor(answer,root,node,null);
-            if(answer.ans==null)
+            getLeftBoundary(list, node.right);
+    }
+    private void getRightBoundary(List<Integer> list, Node node) {
+        if (node == null)
+            return;
+        if (node.left == null && node.right == null) {
+            return;
+        }
+        list.add(node.value);
+        if(node.right!=null) {
+            getRightBoundary(list, node.right);
+        }
+        else
+            getRightBoundary(list, node.left);
+    }
+    private void getLeaves(List<Integer> list, Node node) {
+        if (node == null)
+            return;
+        if (node.left == null && node.right == null) {
+            list.add(new Integer(node.value));
+            return;
+        }
+        getLeaves(list, node.left);
+        getLeaves(list, node.right);
+    }
+
+    void constructTreeFromInorderAndPreorderTransversals() {
+        int[] preorder = new int[]{50, 30, 5, 20, 60, 45, 10, 70, 85, 90};
+        int[] inorder = new int[]{5, 30, 20, 50, 10, 45, 60, 85, 70, 90};
+        Index index = new Index(0);
+        BST bst = new BST();
+        bst.root = makeTreeFromPreOrderAndInorder(inorder, preorder, 0, inorder.length - 1, index);
+        bst.preorder();
+        bst.inorder();
+    }
+
+    private static final class SuccesorAnswer {
+        private Node ans;
+    }
+
+    public void getSuccesor(int n) {
+        Node node = findNode(n, root);
+        if (node == null)
+            return;
+        Integer ans = null;
+        if (node.right != null) {
+            Node trav = node.right;
+            while (trav.left != null)
+                trav = trav.left;
+            System.out.println(trav.value);
+        } else {
+            SuccesorAnswer answer = new SuccesorAnswer();
+            getSuccessor(answer, root, node, null);
+            if (answer.ans == null)
                 System.out.println("No succesor");
             else
                 System.out.println(answer.ans.value);
         }
 
     }
-    public void getSuccessor(SuccesorAnswer answer,Node root,Node key,Node lastLeft)
-    {
-        if(root==null)
+
+    public void getSuccessor(SuccesorAnswer answer, Node root, Node key, Node lastLeft) {
+        if (root == null)
             return;
-        if(root==key)
-        {   answer.ans=lastLeft;
+        if (root == key) {
+            answer.ans = lastLeft;
             return;
         }
-        getSuccessor(answer,root.left,key,root);
-        getSuccessor(answer,root.right,key,lastLeft);
+        getSuccessor(answer, root.left, key, root);
+        getSuccessor(answer, root.right, key, lastLeft);
     }
 
-    private Node findNode(int n,Node node) {
+    private Node findNode(int n, Node node) {
         if (node == null)
             return null;
         if (node.value == n)
@@ -76,28 +137,28 @@ public class BSTmoreQues extends BST {
         Node r = findNode(n, node.right);
         if (r != null)
             return r;
-    return null;
+        return null;
     }
 
-    private void kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(int k)
-    {
-        Integer ans=kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(nodeWithDescendantsRoot,k);
-        if(ans==null)
+    private void kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(int k) {
+        Integer ans = kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(nodeWithDescendantsRoot, k);
+        if (ans == null)
             System.out.println(" not present");
         else
             System.out.println(ans);
 
     }
-    private Integer  kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(NodeWithDescendants root,int k)
-    {
-        if(root==null)
+
+    private Integer kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(NodeWithDescendants root, int k) {
+        if (root == null)
             return null;
-        int leftSubTreeSize=(root.left==null)?0:root.left.descendants+1;
-        if(leftSubTreeSize+1==k)
+        int leftSubTreeSize = (root.left == null) ? 0 : root.left.descendants + 1;
+        if (leftSubTreeSize + 1 == k)
             return root.value;
-        else if(k>leftSubTreeSize+1) return kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(root.right,k-(leftSubTreeSize+1));
+        else if (k > leftSubTreeSize + 1)
+            return kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(root.right, k - (leftSubTreeSize + 1));
         else//whne leftsize +1 <k ;it lies in left tree
-        return kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(root.left,k);
+            return kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(root.left, k);
     }
 
     public void kthNodeOfInorderTransversal(int k, Node root) {
@@ -120,8 +181,8 @@ public class BSTmoreQues extends BST {
             return;
         kthNodeOfInorderTransversalHelper(root.left, ans);
         ans.k--;
-        if(ans.k==0)
-            ans.ans=root.value;
+        if (ans.k == 0)
+            ans.ans = root.value;
         kthNodeOfInorderTransversalHelper(root.right, ans);
     }
 
@@ -153,7 +214,34 @@ public class BSTmoreQues extends BST {
             System.out.print(top.value + " , ");
             cur = top.right;
         }
+    }
 
+    private static final class Index {
+        int index;
+
+        Index(int i) {
+            this.index = i;
+        }
+    }
+
+    private Node makeTreeFromPreOrderAndInorder(int[] inorder, int[] preorder, int start, int end, Index indexInPreorder) {
+        if (start > end)
+            return null;
+        int index = -1;
+        for (int i = start; i <= end; i++) {
+            if (preorder[indexInPreorder.index] == inorder[i]) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            Node nn = new Node(inorder[index]);
+            indexInPreorder.index++;
+            nn.left = makeTreeFromPreOrderAndInorder(inorder, preorder, start, index - 1, indexInPreorder);
+            nn.right = makeTreeFromPreOrderAndInorder(inorder, preorder, index + 1, end, indexInPreorder);
+            return nn;
+        } else
+            return null;
     }
 
     public boolean doesRootToLeafPathSUmExists(Node root, int sum) {
@@ -245,13 +333,14 @@ public class BSTmoreQues extends BST {
     }
 
     public void populateTreeWithDescendants() {
-      //  Scanner sc = new Scanner("1 true 2 true 4 true 8 false false true 9 false false true 5 true 10 false false false true 3 true 6 false false true 7 false false");
+        //  Scanner sc = new Scanner("1 true 2 true 4 true 8 false false true 9 false false true 5 true 10 false false false true 3 true 6 false false true 7 false false");
         Scanner sc = new Scanner("50 true 30 true 5 false false true 20 false false true 60 true 45 true 10 false false true 51 false false true 70 true 85 false false true 90 false false");
         System.out.println("Enter root of tree");
         int n = sc.nextInt();
         this.nodeWithDescendantsRoot = new NodeWithDescendants(n);
         populateTreeWithDescendants(this.nodeWithDescendantsRoot, sc);
     }
+
     private void populateTreeWithDescendants(NodeWithDescendants root, Scanner sc) {
 
         System.out.println("Any Left Child Of " + root.value);
@@ -261,9 +350,9 @@ public class BSTmoreQues extends BST {
             int left = sc.nextInt();
             NodeWithDescendants nn = new NodeWithDescendants(left);
             root.left = nn;
-            root.descendants+=1;
+            root.descendants += 1;
             populateTreeWithDescendants(nn, sc);
-            root.descendants+=nn.descendants;
+            root.descendants += nn.descendants;
         }
 
         System.out.println("Any Right Child Of " + root.value);
@@ -273,9 +362,9 @@ public class BSTmoreQues extends BST {
             int right = sc.nextInt();
             NodeWithDescendants nn = new NodeWithDescendants(right);
             root.right = nn;
-            root.descendants+=1;
+            root.descendants += 1;
             populateTreeWithDescendants(nn, sc);
-            root.descendants+=nn.descendants;
+            root.descendants += nn.descendants;
         }
     }
 
@@ -333,13 +422,44 @@ public class BSTmoreQues extends BST {
 
     }
 
+    public void getLeavesAsLinkedList() {
+        Node[] ans = getLeavesAsLinkedList(root);
+        Node trav = ans[0];
+        System.out.println();
+        while (trav != null) {
+            System.out.print(trav.value + " -> ");
+            trav = trav.right;
+        }
+        System.out.println();
+    }
+
+    private Node[] getLeavesAsLinkedList(Node root) {
+        if (root == null)
+            return null;
+        if (root.left == null && root.right == null)
+            return new Node[]{root, root};
+        Node[] left = getLeavesAsLinkedList(root.left);
+        Node[] right = getLeavesAsLinkedList(root.right);
+        if (left == null)
+            return right;
+        else if (right == null)
+            return left;
+        else {
+            if (left[1] != null) {
+                left[1].right = right[0];
+            }
+            return new Node[]{left[0], right[1]};
+        }
+
+    }
+
     /*    50
       /      \
    30         60 //->4 answer
   /   \      /    \
  5    20   45      70
-          /   \     / \
-         10  51   85 90
+          /        / \
+         10     85 90
    */
 }
 
