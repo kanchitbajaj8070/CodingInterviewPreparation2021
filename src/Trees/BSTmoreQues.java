@@ -9,8 +9,10 @@ public class BSTmoreQues extends BST {
     public static void main(String[] args) {
         BSTmoreQues tree = new BSTmoreQues();
         tree.populateTree();
-        tree.preorder();
+        //tree.preorder();
         //tree.preOrderWithoutRecursion(tree.root);
+        tree.inorder();
+        tree.addKey(tree.root,null,true,51);
         tree.inorder();
         //tree.kthNodeOfInorderTransversal(8, tree.root);
         //tree.treeInorderWithoutRecursion(tree.root);
@@ -24,22 +26,45 @@ public class BSTmoreQues extends BST {
 //        tree.inorderWithDescendants(tree.nodeWithDescendantsRoot);
 //        System.out.println();
 //        tree.kthNodeOfInorderTransversalWhenDescendantsInfoAvailable(2);
-       // tree.getLeavesAsLinkedList();
+        // tree.getLeavesAsLinkedList();
         //tree.constructTreeFromInorderAndPreorderTransversals();
-        tree.getExterior();
+        //tree.getExterior();
+        tree.findFirstKeyJustGreater(50);
+    }
+
+    public void addKey(Node root,Node parent,boolean isLeft,int key) {
+    if(root==null)
+    {
+        if(isLeft)
+        {
+            parent.left=new Node(key);
+        }
+        else
+            parent.right=new Node(key);
+    }
+   else
+    {
+        if(root.value<key)
+            addKey(root.right,root,false,key);
+        else
+            addKey(root.left,root,true,key);
+
+    }
+
+
     }
 
     private void getExterior() {
-        List<Integer> left=new ArrayList<>();
-        List<Integer> right=new ArrayList<>();
+        List<Integer> left = new ArrayList<>();
+        List<Integer> right = new ArrayList<>();
         List<Integer> leaves = new ArrayList<>();
-        getLeftBoundary(left,root.left);
+        getLeftBoundary(left, root.left);
         getLeaves(leaves, root);
-        getRightBoundary(right,root.right);
+        getRightBoundary(right, root.right);
         Collections.reverse(right);
         left.addAll(leaves);
         left.addAll(right);
-        left.add(0,root.value);
+        left.add(0, root.value);
         System.out.println(left);
     }
 
@@ -50,12 +75,12 @@ public class BSTmoreQues extends BST {
             return;
         }
         list.add(node.value);
-        if(node.left!=null) {
+        if (node.left != null) {
             getLeftBoundary(list, node.left);
-        }
-        else
+        } else
             getLeftBoundary(list, node.right);
     }
+
     private void getRightBoundary(List<Integer> list, Node node) {
         if (node == null)
             return;
@@ -63,12 +88,12 @@ public class BSTmoreQues extends BST {
             return;
         }
         list.add(node.value);
-        if(node.right!=null) {
+        if (node.right != null) {
             getRightBoundary(list, node.right);
-        }
-        else
+        } else
             getRightBoundary(list, node.left);
     }
+
     private void getLeaves(List<Integer> list, Node node) {
         if (node == null)
             return;
@@ -308,7 +333,14 @@ public class BSTmoreQues extends BST {
         this.root = new Node(n);
         populateTree(this.root, sc);
     }
-
+    public void populateTreeForBst() {
+        //Scanner sc = new Scanner("1 true 2 true 4 true 8 false false true 9 false false true 5 true 10 false false false true 3 true 6 false false true 7 false false");
+        Scanner sc = new Scanner("50 true 30 true 5 false false true 40 false false true 60 true 55 false  false  true 70 true 65 false false true 90 false false");
+        System.out.println("Enter root of tree");
+        int n = sc.nextInt();
+        this.root = new Node(n);
+        populateTree(this.root, sc);
+    }
     private void populateTree(Node root, Scanner sc) {
 
         System.out.println("Any Left Child Of " + root.value);
@@ -453,13 +485,36 @@ public class BSTmoreQues extends BST {
 
     }
 
+    void findFirstKeyJustGreater(int k) {
+        Answer ans = new Answer();
+        findFirstKeyJustGreaterThanK(k, root, ans);
+        System.out.println("********* " + ans.val + " *************");
+    }
+
+    void findFirstKeyJustGreaterThanK(int k, Node root, Answer ans) {
+        if (root == null)
+            return;
+        if (root.value <= k) {
+            findFirstKeyJustGreaterThanK(k, root.right, ans);
+        } else {
+            ans.val = root.value;
+            findFirstKeyJustGreaterThanK(k, root.left, ans);
+        }
+
+
+    }
+
+    private static final class Answer {
+        int val;
+
+    }
     /*    50
       /      \
    30         60 //->4 answer
   /   \      /    \
  5    20   45      70
           /        / \
-         10     85 90
+         10     ``85 90
    */
 }
 
